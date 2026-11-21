@@ -1,0 +1,12 @@
+{% extends 'master.html' %}
+
+{% block content %}
+<div class="container">
+    {% for item in items %}
+        <h4>{{ item.title }}</h4>
+        <p>{{item.status}}</p>
+    {% empty %}
+        <p>No items have been posted yet</p>
+    {% endfor %}
+</div>
+{% endblock %}
