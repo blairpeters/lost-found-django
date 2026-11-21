@@ -10,18 +10,36 @@
 
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
   <div class="container">
-    <a class="navbar-brand" href="#">Logo</a>
+    <a class="navbar-brand" href="#">Lost&Found</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="collapsibleNavbar">
-      <ul class="navbar-nav">
+      <ul class="navbar-nav ms-auto">
         <li class="nav-item">
           <a class="nav-link" href="{% url 'home' %}">Home</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="{% url 'post_items' %}">Post Items</a>
         </li>
+
+<!--        #handle log out if user is authenticated-->
+        {% if user.is_authenticated %}
+<!--        user logged in-->
+        <li class="nav-item">
+          <a class="nav-link" href="#">{{user.first_name}}</a>
+
+        </li>
+<!--        logout code-->
+        <li class="nav-item">
+          <form action="{% url 'sign-out' %}" method = POST>
+            {% csrf_token %}
+            <button class="btn btn-danger">Sign Out</button>
+          </form>
+        </li>
+
+        {% endif %}
+
 
       </ul>
     </div>
