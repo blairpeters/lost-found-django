@@ -64,3 +64,19 @@ def item_detail(request, pk):
     item = get_object_or_404(Item, pk=pk)
     return render(request, 'item_detail.html', {'item': item})
 
+#delete function that avoids accidental deletion when someone visits eg http://127.0.0.1:8000/delete/5/
+
+def delete_item(request, id):
+
+    item = get_object_or_404(Item, id=id)
+
+    if request.method == 'POST':
+
+        item_title = item.title
+        item.delete()
+
+        messages.success(request, f"{item_title} successfully deleted")
+
+        return redirect('home')
+
+    return redirect('home')

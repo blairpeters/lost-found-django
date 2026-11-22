@@ -45,9 +45,22 @@
     </div>
   </div>
 </nav>
+{##handle messages#}
+{% if messages %}
+    {% for message in messages %}
+        <div class="container mt-3">
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        </div>
+    {% endfor %}
+{% endif %}
 
 {% block content %}
 {% endblock %}
+{#to ensure that eg when i click the X to dismiss the messages shown they are dismissed#}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 </html>
