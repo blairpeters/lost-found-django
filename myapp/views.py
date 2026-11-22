@@ -1,3 +1,6 @@
+from django.shortcuts import render
+
+# Create your views here.
 from django.shortcuts import render, redirect
 from myapp.my_forms import ItemForm,RegisterForm
 from django.contrib import messages
@@ -5,6 +8,10 @@ from myapp.models import Item
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, get_object_or_404
+from .models import Item
+from .my_forms import ItemForm
+
 
 
 # Create your views here.
@@ -52,4 +59,8 @@ def register(request):
     else:
         form= RegisterForm()
     return render(request, 'registration/signup.html',{'form':form})
+
+def item_detail(request, pk):
+    item = get_object_or_404(Item, pk=pk)
+    return render(request, 'item_detail.html', {'item': item})
 
