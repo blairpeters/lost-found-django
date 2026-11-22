@@ -34,6 +34,18 @@
                         <a href="{% url 'item_detail' item.pk %}" class="btn btn-primary mt-auto w-100">
                             View Details
                         </a>
+                        Delete button#}
+
+                        <form action="{% url 'delete' item.id %}" method="POST"
+                              onsubmit="return confirm('Are you sure you want to permanently delete {{ item.title|escapejs }}?');">
+
+                            {% csrf_token %}
+
+                            <button type="submit" class="btn btn-danger w-100">
+                                Delete Item
+                            </button>
+
+                        </form>
                     </div>
                 </div>
             </div>
