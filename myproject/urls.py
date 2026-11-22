@@ -16,7 +16,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.contrib import admin
+from django.urls import path
 from myapp import views
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -24,6 +28,10 @@ urlpatterns = [
     path('post-items', views.post_items, name='post_items'),
     path('accounts/login/', views.signin, name='login'),
     path('accounts/signup/', views.register, name='register'),
-    path('accounts/logout/', views.signout, name= 'sign-out'),
+    path('accounts/logout/', views.signout, name='sign-out'),
+    path('item/<int:pk>/', views.item_detail, name='item_detail'),
+
 
 ]
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
