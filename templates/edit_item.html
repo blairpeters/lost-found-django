@@ -1,0 +1,14 @@
+{% extends 'master.html' %}
+{% load django_bootstrap5 %}
+
+{% block content %}
+<div class="container">
+    <h2 class="my-3">Edit Item</h2>
+    <form action="{% url 'edit_item' item.pk %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+        <a href="{% url 'item_detail' item.pk %}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock %}

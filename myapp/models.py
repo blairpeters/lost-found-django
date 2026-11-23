@@ -1,5 +1,6 @@
-from django.db import models
 import uuid
+from django.conf import settings
+from django.db import models
 
 def gen_unique_path(instance, filename):
     ext = filename.split('.')[-1]
@@ -21,6 +22,13 @@ STATUS = [
 
 # Create your models here.
 class Item(models.Model):
+    owner = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        related_name='items',
+        blank=True,
+        null=True,
+    )
     title = models.CharField(max_length=100)
     description = models.TextField()
     category = models.CharField(max_length=100, choices=CATEGORIES)
