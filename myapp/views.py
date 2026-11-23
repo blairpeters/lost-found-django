@@ -7,7 +7,7 @@ from django.contrib import messages
 from myapp.models import Item
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, logout
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.shortcuts import render, get_object_or_404
 from .models import Item
 from .my_forms import ItemForm
@@ -15,7 +15,7 @@ from .my_forms import ItemForm
 
 
 # Create your views here.
-#@login_required
+@login_required
 def home(request):
     items = Item.objects.all()
     return render(request, 'home.html', {'items': items})
@@ -48,7 +48,7 @@ def signin(request):
     else:
         form = AuthenticationForm()
     return render(request, 'registration/login.html', {'form': form})
-
+@login_required
 def signout(request):
     if request.method == 'POST':
         logout(request)
@@ -63,7 +63,7 @@ def register(request):
     else:
         form= RegisterForm()
     return render(request, 'registration/signup.html',{'form':form})
-
+@login_required
 def item_detail(request, pk):
     item = get_object_or_404(Item, pk=pk)
     return render(request, 'item_detail.html', {'item': item})
@@ -86,7 +86,8 @@ def edit_item(request, pk):
 
 
 #delete function that avoids accidental deletion when someone visits eg http://127.0.0.1:8000/delete/5/
-
+@login_required
+@user_passes_test(lambda user: user.is_staff) #ensures Someone doesnt manually enter the deletion URL in their browser or send a POST request.
 def delete_item(request, id):
 
     item = get_object_or_404(Item, id=id)

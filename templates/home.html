@@ -39,7 +39,8 @@
                             Edit Item
                         </a>
                         {% endif %}
-                        Delete button#}
+{#                        Delete button - a super user feature#}
+                    {% if user.is_authenticated and user.is_superuser %}
 
                         <form action="{% url 'delete' item.id %}" method="POST"
                               onsubmit="return confirm('Are you sure you want to permanently delete {{ item.title|escapejs }}?');">
@@ -51,6 +52,7 @@
                             </button>
 
                         </form>
+                    {% endif %}
                     </div>
                 </div>
             </div>
