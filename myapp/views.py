@@ -19,12 +19,16 @@ from .my_forms import ItemForm
 def home(request):
     items = Item.objects.all()
     return render(request, 'home.html', {'items': items})
+
+
+@login_required
 def post_items(request):
     if request.method == 'POST':
         form = ItemForm(request.POST, request.FILES)
-    #     validate user input
         if form.is_valid():
-            form.save()
+            item = form.save(commit=False)
+            item.owner = request.user
+            item.save()
             messages.success(request, "Item successfully posted")
             return redirect('home')
     else:
@@ -63,6 +67,23 @@ def register(request):
 def item_detail(request, pk):
     item = get_object_or_404(Item, pk=pk)
     return render(request, 'item_detail.html', {'item': item})
+
+
+@login_required
+def edit_item(request, pk):
+    item = get_object_or_404(Item, pk=pk, owner=request.user)
+
+    if request.method == 'POST':
+        form = ItemForm(request.POST, request.FILES, instance=item)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Item successfully updated")
+            return redirect('item_detail', pk=item.pk)
+    else:
+        form = ItemForm(instance=item)
+
+    return render(request, 'edit_item.html', {'form': form, 'item': item})
+
 
 #delete function that avoids accidental deletion when someone visits eg http://127.0.0.1:8000/delete/5/
 
